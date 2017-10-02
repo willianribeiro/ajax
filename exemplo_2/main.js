@@ -84,116 +84,69 @@
 })()
 
 
-    function Api() {
-        'use strict'
+function Api () {
+    'use strict'
 
-        var api = {
-            getCurrentUser: getCurrentUser,
-            getWishlist: getWishlist,
-            listBlackFridayProducts: listBlackFridayProducts,
-            listProducts: listProducts,
-            getProduct: getProduct,
-        }
-
-        function _isRequestSucceeded(ajax) {
-            return ajax.status === 200 && ajax.readyState === 4
-        }
-
-        function getCurrentUser() {
-            const request = (resolve, reject) => {
-                var ajax = new XMLHttpRequest()
-                ajax.open('GET', './data/user.json')
-                ajax.addEventListener('readystatechange', () => {
-                    if (_isRequestSucceeded(ajax))
-                        try {
-                            const response = JSON.parse(ajax.response)
-                            resolve(response)
-                        } catch (error) {
-                            console.error(error)
-                        }
-                })
-                ajax.send()
-            }
-
-            return new Promise(request)
-        }
-
-        function getWishlist(userId) {
-            const request = (resolve, reject) => {
-                var ajax = new XMLHttpRequest()
-                ajax.open('GET', './data/wishlist.json')
-                ajax.addEventListener('readystatechange', () => {
-                    if (_isRequestSucceeded(ajax))
-                        try {
-                            const response = JSON.parse(ajax.response)
-                            resolve(response)
-                        } catch (error) {
-                            console.error(error)
-                        }
-                })
-                ajax.send()
-            }
-
-            return new Promise(request)
-        }
-
-        function listBlackFridayProducts() {
-            const request = (resolve, reject) => {
-                var ajax = new XMLHttpRequest()
-                ajax.open('GET', './data/black_friday.json')
-                ajax.addEventListener('readystatechange', () => {
-                    if (_isRequestSucceeded(ajax))
-                        try {
-                            const response = JSON.parse(ajax.response)
-                            resolve(response)
-                        } catch (error) {
-                            console.error(error)
-                        }
-                })
-                ajax.send()
-            }
-
-            return new Promise(request)
-        }
-
-        function listProducts() {
-            const request = (resolve, reject) => {
-                var ajax = new XMLHttpRequest()
-                ajax.open('GET', './data/products.json')
-                ajax.addEventListener('readystatechange', () => {
-                    if (_isRequestSucceeded(ajax))
-                        try {
-                            const response = JSON.parse(ajax.response)
-                            resolve(response)
-                        } catch (error) {
-                            console.error(error)
-                        }
-                })
-                ajax.send()
-            }
-
-            return new Promise(request)
-        }
-
-        function getProduct(id) {
-            const request = (resolve, reject) => {
-                var ajax = new XMLHttpRequest()
-                var url = './data/product${id}.json'.replace('${id}', id)
-                ajax.open('GET', url)
-                ajax.addEventListener('readystatechange', () => {
-                    if (_isRequestSucceeded(ajax))
-                        try {
-                            const response = JSON.parse(ajax.response)
-                            resolve(response)
-                        } catch (error) {
-                            console.error(error)
-                        }
-                })
-                ajax.send()
-            }
-
-            return new Promise(request)
-        }
-
-        return api;
+    const api = {
+        getCurrentUser: getCurrentUser,
+        getWishlist: getWishlist,
+        listBlackFridayProducts: listBlackFridayProducts,
+        listProducts: listProducts,
+        getProduct: getProduct,
     }
+
+    // private functions
+    function _isRequestSucceeded(ajax) {
+        return ajax.status === 200 && ajax.readyState === 4
+    }
+
+    function _createRequest(method, url) {
+        return (resolve, request) => {
+            const ajax = new XMLHttpRequest()
+            ajax.open(method, url)
+            ajax.addEventListener('readystatechange', () => {
+                if (_isRequestSucceeded(ajax))
+                    try {
+                        const response = JSON.parse(ajax.response)
+                        resolve(response)
+                    } catch(error) {
+                        console.error(error)
+                    }
+            })
+            ajax.send()
+        }
+    }
+
+    // public functions
+    function getCurrentUser() {
+        const request = _createRequest('GET', './data/user.json')
+        const promise = new Promise(request)
+        return promise
+    }
+
+    function getWishlist(userId) {
+        const request = _createRequest('GET', './data/wishlist.json')
+        const promise = new Promise(request)
+        return promise
+    }
+
+    function listBlackFridayProducts() {
+        const request = _createRequest('GET', './data/black_friday.json')
+        const promise = new Promise(request)
+        return promise
+    }
+
+    function listProducts() {
+        const request = _createRequest('GET', './data/products.json')
+        const promise = new Promise(request)
+        return promise
+    }
+
+    function getProduct(id) {
+        const request = _createRequest('GET', './data/product${id}.json'.replace('${id}', id))
+        const promise = new Promise(request)
+        return promise
+    }
+
+    return api;
+}
