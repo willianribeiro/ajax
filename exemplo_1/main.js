@@ -3,10 +3,8 @@
  * 
  * 1. Buscar usuário logado
  * 2. Buscar wishlist do usuário logado
- * 3. Buscar cada produto da wishlist
- * 4. Calcular o valor final de cada produto e adicionar ao objeto produto
- * 5. Buscar os produtos que estão na black friday: api.listBlackFridayProducts()
- * 6. Filtrar a wishlist do usuário pelos produtos que estão na black friday.
+ * 3. Buscar os produtos que estão na black friday
+ * 4. Filtrar a wishlist do usuário pelos produtos que estão na black friday.
  * 
  * 
  * # Documentação Api:
@@ -19,7 +17,6 @@
  * 
  * 
  * # Documentação dos objetos:
- * 
  *      Product:
  *      {
  *          "id": number,
@@ -40,45 +37,23 @@
 (function() {
     'use strict'
 
-    var api = Api()
-
-    let userWishlist;
+    const api = Api()
     let productsInBlackFriday;
 
     api.getCurrentUser().then(user => {
-
         console.log('user: ', user)
 
         api.getWishlist(user.id).then(wishlist => {
-            const promises = [];
+            console.log('wishlist: ', wishlist)
 
-            wishlist.forEach(productId => {
-                promises.push(api.getProduct(productId))
-            })
+            api.listBlackFridayProducts().then(blackFriday => {
+                console.log('black friday: ', blackFriday)
 
-            Promise.all(promises).then(responses => {
-                userWishlist = responses.map(product => {
-                    const finalValue = product.value * product.discount / 100
-                    return {
-                        id: product.id,
-                        name: product.name,
-                        value: product.value,
-                        discount: product.discount,
-                        finalValue: finalValue
-                    }
+                productsInBlackFriday =  wishlist.filter(wishlistId => {
+                    return blackFriday.some(blackFridayId => blackFridayId === wishlistId)
                 })
 
-                console.log('wishlist: ', userWishlist)
-                
-                api.listBlackFridayProducts().then(blackFriday => {
-                    console.log('black friday: ', blackFriday)
-
-                    productsInBlackFriday =  userWishlist.filter(product => {
-                        return blackFriday.some(id => id === product.id)
-                    })
-
-                    console.log('Produtos da wishlist na blackFriday: ', productsInBlackFriday)
-                })
+                console.log('Produtos da wishlist na blackFriday: ', productsInBlackFriday)
             })
         })
     })
