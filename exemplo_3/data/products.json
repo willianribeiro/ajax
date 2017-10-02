@@ -1,0 +1,44 @@
+[
+    {
+        "id": 0,
+        "name": "Smartphone",
+        "value": 789,
+        "discount": 10
+    },
+    {
+        "id": 1,
+        "name": "Smart TV",
+        "value": 1179.46,
+        "discount": 10
+    },
+    {
+        "id": 2,
+        "name": "Notebook",
+        "value": 3099.99,
+        "discount": 0
+    },
+    {
+        "id": 3,
+        "name": "Ar condicionado",
+        "value": 1517.9,
+        "discount": 0
+    },
+    {
+        "id": 4,
+        "name": "Tenis masculino",
+        "value": 79.8,
+        "discount": 0
+    },
+    {
+        "id": 5,
+        "name": "Cadeira gamer",
+        "value": 639.9,
+        "discount": 7
+    },
+    {
+        "id": 6,
+        "name": "Head phone",
+        "value": 221,
+        "discount": 5
+    }
+]
