@@ -33,6 +33,10 @@
  *          "email": "machado@assis.com.br"}
  *      }
  * 
+ * # Solução
+ * 
+ * Usando XMLHttpRequest + promises
+ * 
  */
 (function() {
     'use strict'

@@ -36,6 +36,10 @@
  *          "email": "machado@assis.com.br"}
  *      }
  * 
+ * 
+ * # Solução:
+ * 
+ * Usando fetch api
  */
 (function () {
     'use strict'
